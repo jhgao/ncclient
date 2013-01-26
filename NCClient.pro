@@ -13,8 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        ncclientwindow.cpp
+        ncclientwindow.cpp \
+    gui/rcvprogressview.cpp \
+    gui/rcvprogressscene.cpp
 
-HEADERS  += ncclientwindow.h
+HEADERS  += ncclientwindow.h \
+    gui/rcvprogressview.h \
+    gui/rcvprogressscene.h
 
 FORMS    += ncclientwindow.ui

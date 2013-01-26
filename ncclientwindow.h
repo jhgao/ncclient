@@ -2,6 +2,7 @@
 #define NCCLIENTWINDOW_H
 
 #include <QMainWindow>
+#include "gui/rcvprogressview.h"
 
 namespace Ui {
 class NCClientWindow;
@@ -15,6 +16,8 @@ public:
     explicit NCClientWindow(QWidget *parent = 0);
     ~NCClientWindow();
     
+private slots:
+
 private:
     Ui::NCClientWindow *ui;
 };
