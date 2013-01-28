@@ -16,6 +16,25 @@ NCClientWindow::NCClientWindow(QWidget *parent) :
     initCon();
     initCon2();
 
+    //find a local ip
+    QList<QHostAddress> ipAddressesList;
+    QString ipAddress;
+
+    ipAddressesList = QNetworkInterface::allAddresses();
+    // use the first non-localhost IPv4 address
+    for (int i = 0; i < ipAddressesList.size(); ++i) {
+        if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
+                ipAddressesList.at(i).toIPv4Address()) {
+            ipAddress = ipAddressesList.at(i).toString();
+            break;
+        }
+    }
+    // if we did not find one, use IPv4 localhost
+    if (ipAddress.isEmpty())
+        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
+
+    ui->lineEdit_serverAddr_all->setText(ipAddress);
+    ui->lineEdit_serverPort_all->setText(QString::number(SERVER_DEFAULT_PORT));
 }
 
 NCClientWindow::~NCClientWindow()
@@ -131,27 +150,7 @@ void NCClientWindow::initCon()
 
     connect(ui->graphicsView, SIGNAL(sig_resized(QSize)),
             &i_conScene, SLOT(arragneToView(QSize)));
-    //find a local ip
-    QList<QHostAddress> ipAddressesList;
-    QString ipAddress;
-
-    ipAddressesList = QNetworkInterface::allAddresses();
-    // use the first non-localhost IPv4 address
-    for (int i = 0; i < ipAddressesList.size(); ++i) {
-        if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
-                ipAddressesList.at(i).toIPv4Address()) {
-            ipAddress = ipAddressesList.at(i).toString();
-            break;
-        }
-    }
-    // if we did not find one, use IPv4 localhost
-    if (ipAddress.isEmpty())
-        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
-
-    ui->lineEdit_serverAddr->setText(ipAddress);
-    ui->lineEdit_serverPort->setText(QString::number(SERVER_DEFAULT_PORT));
-
-    qDebug() << "GUI thread " << this->thread();
+    qDebug() << "initCon() GUI thread " << this->thread();
 
 }
 
@@ -164,27 +163,8 @@ void NCClientWindow::initCon2()
 
     connect(ui->graphicsView_2, SIGNAL(sig_resized(QSize)),
             &i_conScene2, SLOT(arragneToView(QSize)));
-    //find a local ip
-    QList<QHostAddress> ipAddressesList;
-    QString ipAddress;
 
-    ipAddressesList = QNetworkInterface::allAddresses();
-    // use the first non-localhost IPv4 address
-    for (int i = 0; i < ipAddressesList.size(); ++i) {
-        if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
-                ipAddressesList.at(i).toIPv4Address()) {
-            ipAddress = ipAddressesList.at(i).toString();
-            break;
-        }
-    }
-    // if we did not find one, use IPv4 localhost
-    if (ipAddress.isEmpty())
-        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
-
-    ui->lineEdit_serverAddr_2->setText(ipAddress);
-    ui->lineEdit_serverPort_2->setText(QString::number(SERVER_DEFAULT_PORT));
-
-    qDebug() << "GUI thread " << this->thread();
+    qDebug() << "initCon2 ()GUI thread " << this->thread();
 
 }
 
@@ -236,4 +216,16 @@ void NCClientWindow::onDisconnected2()
     m_isConnected2 = false;
     ui->groupBox_server_2->setEnabled(true);
     ui->pushButton_linkServer_2->setText("Connect");
+}
+
+void NCClientWindow::on_lineEdit_serverAddr_all_textChanged(const QString &arg1)
+{
+    ui->lineEdit_serverAddr->setText(arg1);
+    ui->lineEdit_serverAddr_2->setText(arg1);
+}
+
+void NCClientWindow::on_lineEdit_serverPort_all_textChanged(const QString &arg1)
+{
+    ui->lineEdit_serverPort->setText(arg1);
+    ui->lineEdit_serverPort_2->setText(arg1);
 }

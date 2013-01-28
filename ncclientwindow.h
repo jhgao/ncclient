@@ -44,6 +44,10 @@ private slots:
 
     void on_pushButton_linkServer_2_clicked();
 
+    void on_lineEdit_serverAddr_all_textChanged(const QString &arg1);
+
+    void on_lineEdit_serverPort_all_textChanged(const QString &arg1);
+
 private:
     void inline initCon();
     void inline initCon2();
