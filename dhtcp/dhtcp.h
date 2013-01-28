@@ -16,7 +16,7 @@
 namespace nProtocTCP{
 
 static const int WAIT_RCV_BLOCK_TIMEOUT = 5000 ;   //15s
-static const int DISPLAY_BLOCK_SIZE = (100*1000) ;  //100K
+static const int DISPLAY_BLOCK_SIZE = (10*1024) ;  //10K as UDP
 
 class DHtcp : public DataHandler
 {

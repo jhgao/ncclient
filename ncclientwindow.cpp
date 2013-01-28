@@ -183,6 +183,7 @@ void NCClientWindow::onConnected()
 {
     m_isConnected = true;
     ui->groupBox_server->setDisabled(true);
+    ui->groupBox_protocol->setDisabled(true);
     ui->pushButton_linkServer->setText("Disconnect");
 }
 
@@ -190,6 +191,7 @@ void NCClientWindow::onDisconnected()
 {
     m_isConnected = false;
     ui->groupBox_server->setEnabled(true);
+    ui->groupBox_protocol->setEnabled(true);
     ui->pushButton_linkServer->setText("Connect");
 }
 
@@ -208,6 +210,7 @@ void NCClientWindow::onConnected2()
 {
     m_isConnected2 = true;
     ui->groupBox_server_2->setDisabled(true);
+    ui->groupBox_protocol_2->setDisabled(true);
     ui->pushButton_linkServer_2->setText("Disconnect");
 }
 
@@ -215,6 +218,7 @@ void NCClientWindow::onDisconnected2()
 {
     m_isConnected2 = false;
     ui->groupBox_server_2->setEnabled(true);
+    ui->groupBox_protocol_2->setEnabled(true);
     ui->pushButton_linkServer_2->setText("Connect");
 }
 
