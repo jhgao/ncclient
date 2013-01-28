@@ -48,7 +48,6 @@ HEADERS  += ncclientwindow.h \
     dhudp/dhudpdecoder.h \
     dhudp/dhudp.h \
     dhudp/decparams.h \
-    dhudp/consts.h \
     dhtcp/dhtcpprotocol.h \
     dhtcp/dhtcpdecoder.h \
     dhtcp/dhtcp.h

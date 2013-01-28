@@ -19,7 +19,7 @@ namespace nProtocUDP{
 static const QString RCVER_CACHE_FILE = "dhudp.rcvcache";
 static const QString DECODE_TO_RAW_FILE = "dhudp.rcvcache.raw";
 static const int PROCESS_QUEUE_DELAY_TIMEOUT = 150;
-static const int WRONG_FRAGS_TOLERATION = ((ENC_BLOCK_SIZE)/(FRAGMENT_SIZE) +1);
+static const int WRONG_FRAGS_LIMIT_DEFAULT = 50;
 static const int CORRECTION_CYC_TIMES_LIMIT = 500;
 
 class DHudpDecoder : public QObject
@@ -61,6 +61,7 @@ private:
 
     //receiveFragment
     int i_wrongFragsCounter;
+    int i_wrongFragsLimit;  //trigger correction cycle
     quint32 i_rcv_cyc;
     QList<RcvBlock> i_rcvCycleBlocks;   //already got blocks
 

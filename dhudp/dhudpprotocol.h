@@ -1,7 +1,6 @@
 #ifndef DHUDPPROTOCOL_H
 #define DHUDPPROTOCOL_H
 
-#include "consts.h"
 namespace nProtocUDP{
 
 enum eControl_CMD {

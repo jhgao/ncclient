@@ -5,7 +5,7 @@ namespace nProtocUDP{
 DHudpDecoder::DHudpDecoder(DHudpRcvQueue &q, QObject *parent) :
     QObject(parent),i_queue(q),i_wrongFragsCounter(0),i_rcv_cyc(0),
     i_lastCorrectionFromCyc(0),i_lastCorrectionToCyc(0),
-    i_correctionCycCounter(0)
+    i_correctionCycCounter(0),i_wrongFragsLimit(WRONG_FRAGS_LIMIT_DEFAULT)
 {
     //cache file
     i_rcvCacheFileInfo.setFile(RCVER_CACHE_FILE);
@@ -22,6 +22,7 @@ void DHudpDecoder::resetDecodeParameters(const DecParams &p)
 {
     qDebug() << "DHudpDecoder::setDecodeParameters()";
     i_params = p;
+    i_wrongFragsLimit = i_params.inBlockDataSize / i_params.fragSize +1;
     initRcvBitMapFromBlocksNum(i_params.totalEncBlocks);
     //prepare for cycle 0
     i_rcv_cyc = 0;
@@ -127,7 +128,7 @@ void DHudpDecoder::correctCycleTo(quint32 cyc)
             &&  cyc == i_lastCorrectionToCyc)
         return;
 
-    if( i_wrongFragsCounter > WRONG_FRAGS_TOLERATION){
+    if( i_wrongFragsCounter > i_wrongFragsLimit){
         i_wrongFragsCounter = 0;
         emit sig_correctionCyc(i_rcv_cyc);
         i_correctionCycCounter++;

@@ -13,10 +13,6 @@ quint16 RcvBlock::assembleFragment(Fragment &f){
     if( f.cyc != cyc) return 0;
     if( gotFrags.contains(f.fragNo)) return 0;
 
-    //adjust target size
-    if( 0 < f.blockSize && f.blockSize < 2*ENC_BLOCK_SIZE)
-        tgtSize = f.blockSize;
-
     //save
     data.replace((int)f.offset,
                         (int)f.dataSize(),

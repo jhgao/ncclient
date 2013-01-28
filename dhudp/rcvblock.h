@@ -3,7 +3,6 @@
 
 #include <QSet>
 #include "fragment.h"
-#include "consts.h"
 
 namespace nProtocUDP{
 class RcvBlock
