@@ -15,7 +15,6 @@ public:
     virtual eProtocTypes type() const = 0;
     /* used when connect to Server */
     virtual QByteArray declareArg() = 0;
-    virtual VideoBuffer* videoBuf() = 0;
 signals:
     void sig_writeOutCmd(quint16,QByteArray);
 

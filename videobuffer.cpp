@@ -5,14 +5,15 @@ VideoBuffer::VideoBuffer(QObject *parent) :
 {
 }
 
-void VideoBuffer::appendBlock(const QByteArray &a)
+void VideoBuffer::waitForAppendBlock(const QByteArray &a)
+{
+//    qDebug() << "VideoBuffer::waitForAppendBlock()";
+    QWriteLocker locker(&i_lock);
+    this->buffer().append(a);
+}
+
+qint64 VideoBuffer::waitForSize()
 {
     QReadLocker locker(&i_lock);
-    this->buffer().append(a);
-//    qDebug() << "VideoBuffer::appendBlock()" << this->buffer().size();
-    if(this->buffer().size() > 15000
-            && !i_triggered ){
-        i_triggered = true;
-        emit sig_readyPlay();
-    }
+    return this->size();
 }

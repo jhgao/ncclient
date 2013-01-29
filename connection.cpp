@@ -1,8 +1,8 @@
 #include "connection.h"
 
-Connection::Connection(int protocType,QObject *parent) :
+Connection::Connection(int protocType, VideoBuffer *vbuf, QObject *parent) :
     QTcpSocket(parent),packetSize(0),i_cmd_counter(0),i_dh(0),
-    i_ackProtoc(PROTOC_NONE),i_protocType(protocType),i_videoBuffer(0)
+    i_ackProtoc(PROTOC_NONE),i_protocType(protocType)
 {
     connect(this, SIGNAL(readyRead()),
             this, SLOT(onControlSktReadyRead()));
@@ -12,14 +12,14 @@ Connection::Connection(int protocType,QObject *parent) :
     //init data handler
     switch(i_protocType){
     case PROTOC_TCP:
-        i_dh = new nProtocTCP::DHtcp(this);
+        i_dh = new nProtocTCP::DHtcp(vbuf,this);
         connect(i_dh, SIGNAL(sig_progressPercent(uint)),
                 this, SIGNAL(sig_progressPercent(uint)));
         connect(i_dh, SIGNAL(sig_gotBlockSN(quint32)),
                 this, SIGNAL(sig_gotBlockSN(quint32)));
         break;
     case PROTOC_UDP:
-        i_dh = new nProtocUDP::DHudp(this);
+        i_dh = new nProtocUDP::DHudp(vbuf,this);
         connect(i_dh, SIGNAL(sig_progressPercent(uint)),
                 this, SIGNAL(sig_progressPercent(uint)));
         connect(i_dh, SIGNAL(sig_gotBlockSN(quint32)),
@@ -27,14 +27,6 @@ Connection::Connection(int protocType,QObject *parent) :
         break;
     default:;
     }
-    i_videoBuffer = i_dh->videoBuf();
-    connect(i_videoBuffer, SIGNAL(sig_readyPlay()),
-            this, SIGNAL(sig_bufReadyPlay()));
-}
-
-VideoBuffer *Connection::videoBuffer()
-{
-    return i_videoBuffer;
 }
 
 void Connection::onControlSktReadyRead()

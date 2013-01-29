@@ -11,6 +11,7 @@
 #include "decparams.h"
 #include "dhudprcvqueue.h"
 #include "dhudpprotocol.h"
+#include "videobuffer.h"
 
 #include "rcvblock.h"
 
@@ -26,7 +27,9 @@ class DHudpDecoder : public QObject
 {
     Q_OBJECT
 public:
-    explicit DHudpDecoder(DHudpRcvQueue &, QObject *parent = 0);
+    explicit DHudpDecoder(DHudpRcvQueue &,
+                          VideoBuffer* vbuf = 0,
+                          QObject *parent = 0);
     void resetDecodeParameters(const DecParams&);
     
 signals:
@@ -75,6 +78,8 @@ private:
     quint32 i_lastCorrectionFromCyc;
     quint32 i_lastCorrectionToCyc;
     int i_correctionCycCounter;
+
+    VideoBuffer* i_pvbuf;
 
 };
 }//namespace nProtocUDP

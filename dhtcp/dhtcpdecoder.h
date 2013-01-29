@@ -38,6 +38,7 @@ private:
     QQueue<QByteArray> i_queue; //cache
     qint64 i_cacheSize;
     QTimer* i_flushDelayTimer;
+
     VideoBuffer* i_pvbuf;
 };
 }

@@ -15,6 +15,7 @@ NCClientWindow::NCClientWindow(QWidget *parent) :
 
     initCon();
     initCon2();
+    initVideo();
 
     //find a local ip
     QList<QHostAddress> ipAddressesList;
@@ -60,9 +61,9 @@ void NCClientWindow::on_pushButton_linkServer_clicked()
         //new connection
 
         if(ui->radioButton_protocol_TCP->isChecked()){
-            i_con = new Connection(PROTOC_TCP);
+            i_con = new Connection(PROTOC_TCP,i_videoBuf);
         }else if(ui->radioButton_protocol_UDP->isChecked()){
-            i_con = new Connection(PROTOC_UDP);
+            i_con = new Connection(PROTOC_UDP,i_videoBuf);
         }else{
             return;
         }
@@ -80,8 +81,6 @@ void NCClientWindow::on_pushButton_linkServer_clicked()
                 i_con, SLOT(slot_abortWorks()));
         connect(this, SIGNAL(sig_onConConnectToHostCmd(QString,quint16)),
                 i_con, SLOT(slot_connectToHost(QString,quint16)));
-        connect(i_con, SIGNAL(sig_bufReadyPlay()),
-                this, SLOT(onConReadyPlay()));
 
         //handle connection in another thread
         if( i_conThread){
@@ -107,9 +106,9 @@ void NCClientWindow::on_pushButton_linkServer_2_clicked()
         //new connection
 
         if(ui->radioButton_protocol_TCP_2->isChecked()){
-            i_con2 = new Connection(PROTOC_TCP);
+            i_con2 = new Connection(PROTOC_TCP,i_videoBuf2);
         }else if(ui->radioButton_protocol_UDP_2->isChecked()){
-            i_con2 = new Connection(PROTOC_UDP);
+            i_con2 = new Connection(PROTOC_UDP,i_videoBuf2);
         }else{
             return;
         }
@@ -127,8 +126,6 @@ void NCClientWindow::on_pushButton_linkServer_2_clicked()
                 i_con2, SLOT(slot_abortWorks()));
         connect(this, SIGNAL(sig_onConConnectToHostCmd2(QString,quint16)),
                 i_con2, SLOT(slot_connectToHost(QString,quint16)));
-        connect(i_con2, SIGNAL(sig_bufReadyPlay()),
-                this, SLOT(onConReadyPlay2()));
         //handle connection in another thread
         if( i_conThread2){
             i_conThread2->quit();
@@ -175,8 +172,9 @@ void NCClientWindow::initCon2()
 void NCClientWindow::updateProgress(const unsigned int p)
 {
     ui->progressBar->setValue(p);
-    if( p >= 5){    //  TODO when the file is playable
-        emit sig_cacheFilePlayAble();
+
+    if( p == 100){
+        this->onBufReadyPlay();
     }
 }
 
@@ -227,17 +225,17 @@ void NCClientWindow::onDisconnected2()
     ui->pushButton_linkServer_2->setText("Connect");
 }
 
-void NCClientWindow::onConReadyPlay()
+void NCClientWindow::onBufReadyPlay()
 {
     qDebug() << "NCClientWindow::onConReadyPlay() in";
-    ui->videoPlayer->play(Phonon::MediaSource(i_con->videoBuffer()));
+    ui->videoPlayer->play(Phonon::MediaSource(i_videoBuf));
     qDebug() << "NCClientWindow::onConReadyPlay() out";
 }
 
-void NCClientWindow::onConReadyPlay2()
+void NCClientWindow::onBufReadyPlay2()
 {
     qDebug() << "NCClientWindow::onConReadyPlay2() in";
-    ui->videoPlayer_2->play(Phonon::MediaSource(i_con2->videoBuffer()));
+    ui->videoPlayer_2->play(Phonon::MediaSource(i_videoBuf));
     qDebug() << "NCClientWindow::onConReadyPlay2() out";
 }
 
@@ -251,5 +249,16 @@ void NCClientWindow::on_lineEdit_serverPort_all_textChanged(const QString &arg1)
 {
     ui->lineEdit_serverPort->setText(arg1);
     ui->lineEdit_serverPort_2->setText(arg1);
+}
+
+void NCClientWindow::initVideo()
+{
+    qDebug() << "NCClientWindow::initVideo()";
+    i_videoBuf = new VideoBuffer(this);
+    connect(i_videoBuf, SIGNAL(sig_readyPlay()),
+            this, SLOT(onBufReadyPlay()));
+    i_videoBuf2 = new VideoBuffer(this);
+    connect(i_videoBuf2, SIGNAL(sig_readyPlay()),
+            this, SLOT(onBufReadyPlay2()));
 }
 

@@ -11,7 +11,9 @@ class VideoBuffer : public QBuffer
     Q_OBJECT
 public:
     explicit VideoBuffer(QObject *parent = 0);
-    void appendBlock(const QByteArray&);
+    void waitForAppendBlock(const QByteArray&);
+    qint64 waitForSize();
+
 signals:
     void sig_readyPlay();
     

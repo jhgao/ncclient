@@ -2,10 +2,11 @@
 
 namespace nProtocUDP{
 
-DHudpDecoder::DHudpDecoder(DHudpRcvQueue &q, QObject *parent) :
+DHudpDecoder::DHudpDecoder(DHudpRcvQueue &q,VideoBuffer* vbuf, QObject *parent) :
     QObject(parent),i_queue(q),i_wrongFragsCounter(0),i_rcv_cyc(0),
     i_lastCorrectionFromCyc(0),i_lastCorrectionToCyc(0),
-    i_correctionCycCounter(0),i_wrongFragsLimit(WRONG_FRAGS_LIMIT_DEFAULT)
+    i_correctionCycCounter(0),i_wrongFragsLimit(WRONG_FRAGS_LIMIT_DEFAULT),
+    i_pvbuf(vbuf)
 {
     //cache file
     i_rcvCacheFileInfo.setFile(RCVER_CACHE_FILE);

@@ -22,10 +22,10 @@ class DHtcp : public DataHandler
 {
     Q_OBJECT
 public:
-    explicit DHtcp(QObject *parent = 0);
+    explicit DHtcp(VideoBuffer* vbuf = 0,
+                   QObject *parent = 0);
     eProtocTypes type() const;
     QByteArray declareArg();
-    VideoBuffer* videoBuf();
 signals:
     void sig_dataConnected();
 

@@ -24,10 +24,10 @@ class DHudp : public DataHandler
 {
     Q_OBJECT
 public:
-    explicit DHudp(QObject *parent = 0);
+    explicit DHudp(VideoBuffer* vbuf = 0,
+                   QObject *parent = 0);
     eProtocTypes type() const;
     QByteArray declareArg();
-    VideoBuffer* videoBuf();
     
 signals:
     void sig_cmdConnected();

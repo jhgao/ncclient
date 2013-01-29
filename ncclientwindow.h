@@ -8,6 +8,7 @@
 #include "connection.h"
 #include "execthread.h"
 #include "protocol/ports_define.h"
+#include "videobuffer.h"
 
 namespace Ui {
 class NCClientWindow;
@@ -23,7 +24,6 @@ public:
 signals:
     void sig_onConAbortCmd();
     void sig_onConConnectToHostCmd(QString,quint16);
-    void sig_cacheFilePlayAble();
 
     void sig_onConAbortCmd2();
     void sig_onConConnectToHostCmd2(QString,quint16);
@@ -41,8 +41,8 @@ private slots:
     void onConnected2();
     void onDisconnected2();
 
-    void onConReadyPlay();
-    void onConReadyPlay2();
+    void onBufReadyPlay();
+    void onBufReadyPlay2();
 
 
     void on_pushButton_linkServer_clicked();
@@ -58,6 +58,7 @@ private:
     void inline initVideo();
     void inline initCon();
     void inline initCon2();
+
     Ui::NCClientWindow *ui;
     RcvProgressScene i_conScene;
     RcvProgressScene i_conScene2;
@@ -69,6 +70,9 @@ private:
 
     Connection *i_con2;
     ExecThread *i_conThread2;
+
+    VideoBuffer* i_videoBuf;
+    VideoBuffer* i_videoBuf2;
 };
 
 #endif // NCCLIENTWINDOW_H

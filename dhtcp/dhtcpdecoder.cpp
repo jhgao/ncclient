@@ -67,7 +67,7 @@ bool DHtcpDecoder::flushCache()
 
         i_rcvCacheFile.seek(b.offsetFrom);
         qint64 wroteBytes = i_rcvCacheFile.write(b.data);
-        i_pvbuf->appendBlock(b.data);
+        i_pvbuf->waitForAppendBlock(b.data);
 
         if(wroteBytes == b.data.size()){
             i_savedBytes += wroteBytes;

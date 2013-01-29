@@ -1,11 +1,10 @@
 #include "dhtcp.h"
 namespace nProtocTCP{
-DHtcp::DHtcp(QObject *parent) :
+DHtcp::DHtcp(VideoBuffer *vbuf, QObject *parent) :
     DataHandler(parent),i_tcpDataSkt(0),i_dataServer(0),
     i_cmd_counter(0),i_decoder(0),i_rcvFileSize(0),i_packetSize(0),
-    i_savedBytes(0),i_videoBuf(0)
+    i_savedBytes(0),i_videoBuf(vbuf)
 {
-    i_videoBuf = new VideoBuffer(this);
     i_decoder = new DHtcpDecoder(i_videoBuf,this);
 
     i_dataServer = new QTcpServer(this);
@@ -50,11 +49,6 @@ QByteArray DHtcp::declareArg()  //local data port listening
     out << i_ipAddress;
     out << (quint16) i_dataServer->serverPort();
     return arg;
-}
-
-VideoBuffer *DHtcp::videoBuf()
-{
-    return i_videoBuf;
 }
 
 void DHtcp::startFetch()
@@ -208,7 +202,7 @@ void DHtcp::blockRcvFile()
                     i_tcpDataSkt->bytesAvailable());
         i_savedBytes += rcvFile.write(a);
 
-        i_videoBuf->appendBlock(a);
+        i_videoBuf->waitForAppendBlock(a);
         emit sig_progressPercent( i_savedBytes*100/i_rcvFileSize );
         emit sig_gotBlockSN( i_savedBytes / DISPLAY_BLOCK_SIZE );
     }
