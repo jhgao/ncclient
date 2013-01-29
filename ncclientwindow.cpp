@@ -80,6 +80,8 @@ void NCClientWindow::on_pushButton_linkServer_clicked()
                 i_con, SLOT(slot_abortWorks()));
         connect(this, SIGNAL(sig_onConConnectToHostCmd(QString,quint16)),
                 i_con, SLOT(slot_connectToHost(QString,quint16)));
+        connect(i_con, SIGNAL(sig_bufReadyPlay()),
+                this, SLOT(onConReadyPlay()));
 
         //handle connection in another thread
         if( i_conThread){
@@ -125,7 +127,8 @@ void NCClientWindow::on_pushButton_linkServer_2_clicked()
                 i_con2, SLOT(slot_abortWorks()));
         connect(this, SIGNAL(sig_onConConnectToHostCmd2(QString,quint16)),
                 i_con2, SLOT(slot_connectToHost(QString,quint16)));
-
+        connect(i_con2, SIGNAL(sig_bufReadyPlay()),
+                this, SLOT(onConReadyPlay2()));
         //handle connection in another thread
         if( i_conThread2){
             i_conThread2->quit();
@@ -172,6 +175,9 @@ void NCClientWindow::initCon2()
 void NCClientWindow::updateProgress(const unsigned int p)
 {
     ui->progressBar->setValue(p);
+    if( p >= 5){    //  TODO when the file is playable
+        emit sig_cacheFilePlayAble();
+    }
 }
 
 void NCClientWindow::onGotBlock(const quint32 bsn)
@@ -194,7 +200,6 @@ void NCClientWindow::onDisconnected()
     ui->groupBox_protocol->setEnabled(true);
     ui->pushButton_linkServer->setText("Connect");
 }
-
 
 void NCClientWindow::updateProgress2(const unsigned int p)
 {
@@ -222,6 +227,20 @@ void NCClientWindow::onDisconnected2()
     ui->pushButton_linkServer_2->setText("Connect");
 }
 
+void NCClientWindow::onConReadyPlay()
+{
+    qDebug() << "NCClientWindow::onConReadyPlay() in";
+    ui->videoPlayer->play(Phonon::MediaSource(i_con->videoBuffer()));
+    qDebug() << "NCClientWindow::onConReadyPlay() out";
+}
+
+void NCClientWindow::onConReadyPlay2()
+{
+    qDebug() << "NCClientWindow::onConReadyPlay2() in";
+    ui->videoPlayer_2->play(Phonon::MediaSource(i_con2->videoBuffer()));
+    qDebug() << "NCClientWindow::onConReadyPlay2() out";
+}
+
 void NCClientWindow::on_lineEdit_serverAddr_all_textChanged(const QString &arg1)
 {
     ui->lineEdit_serverAddr->setText(arg1);
@@ -233,3 +252,4 @@ void NCClientWindow::on_lineEdit_serverPort_all_textChanged(const QString &arg1)
     ui->lineEdit_serverPort->setText(arg1);
     ui->lineEdit_serverPort_2->setText(arg1);
 }
+

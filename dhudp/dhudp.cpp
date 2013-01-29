@@ -6,7 +6,7 @@ DHudp::DHudp(QObject *parent) :
     DataHandler(parent),i_tcpCmdServer(0),i_tcpCmdSkt(0),
     i_cmd_counter(0),i_cmdPacketSize(0),i_dataPacketSize(0),
     i_decoder(0),i_udpDataSkt(0),i_decoderThread(0),i_queue(0),
-    i_procQueueDelayTimer(0)
+    i_procQueueDelayTimer(0),i_videoBuf(0)
 {
     qDebug() << "DHudp::DHudp()";
 
@@ -15,6 +15,8 @@ DHudp::DHudp(QObject *parent) :
     i_queue = new DHudpRcvQueue(QUEUE_LIMIT_SIZE,this);
     i_procQueueDelayTimer = new QTimer(this);
     i_procQueueDelayTimer->setSingleShot(true);
+
+    i_videoBuf = new VideoBuffer(this);
     i_decoder = new DHudpDecoder(*i_queue);
 
     connect(i_procQueueDelayTimer,SIGNAL(timeout()),//cross thread
@@ -81,6 +83,11 @@ QByteArray DHudp::declareArg()
     out << i_ipAddress;
     out << (quint16) i_tcpCmdServer->serverPort();
     return arg;
+}
+
+VideoBuffer *DHudp::videoBuf()
+{
+    return i_videoBuf;
 }
 
 void DHudp::startFetch()

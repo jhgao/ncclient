@@ -1,9 +1,9 @@
 #include "dhtcpdecoder.h"
 #include <QDebug>
 namespace nProtocTCP{
-DHtcpDecoder::DHtcpDecoder(QObject *parent) :
+DHtcpDecoder::DHtcpDecoder(VideoBuffer *buf, QObject *parent) :
     QObject(parent),i_savedBytes(0),i_cacheSize(0),
-    i_flushDelayTimer(0)
+    i_flushDelayTimer(0),i_pvbuf(buf)
 {
     i_flushDelayTimer = new QTimer(this);
     i_flushDelayTimer->setSingleShot(true);
@@ -67,6 +67,7 @@ bool DHtcpDecoder::flushCache()
 
         i_rcvCacheFile.seek(b.offsetFrom);
         qint64 wroteBytes = i_rcvCacheFile.write(b.data);
+        i_pvbuf->appendBlock(b.data);
 
         if(wroteBytes == b.data.size()){
             i_savedBytes += wroteBytes;

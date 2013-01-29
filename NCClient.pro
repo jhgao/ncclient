@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network phonon
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     dhudp/dhudp.cpp \
     dhudp/decparams.cpp \
     dhtcp/dhtcpdecoder.cpp \
-    dhtcp/dhtcp.cpp
+    dhtcp/dhtcp.cpp \
+    videobuffer.cpp
 
 HEADERS  += ncclientwindow.h \
     gui/rcvprogressview.h \
@@ -50,6 +51,7 @@ HEADERS  += ncclientwindow.h \
     dhudp/decparams.h \
     dhtcp/dhtcpprotocol.h \
     dhtcp/dhtcpdecoder.h \
-    dhtcp/dhtcp.h
+    dhtcp/dhtcp.h \
+    videobuffer.h
 
 FORMS    += ncclientwindow.ui

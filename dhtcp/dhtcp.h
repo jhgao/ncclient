@@ -25,6 +25,7 @@ public:
     explicit DHtcp(QObject *parent = 0);
     eProtocTypes type() const;
     QByteArray declareArg();
+    VideoBuffer* videoBuf();
 signals:
     void sig_dataConnected();
 
@@ -54,6 +55,9 @@ private:
 
     qint64 i_rcvFileSize;
     qint64 i_savedBytes;
+
+    //video buffer
+    VideoBuffer* i_videoBuf;
 };
 }
 

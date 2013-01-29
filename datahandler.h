@@ -4,6 +4,7 @@
 #include <QObject>
 #include "protocol/cmd_define.h"
 #include "protocol/protocoltypes.h"
+#include "videobuffer.h"
 
 class DataHandler : public QObject
 {
@@ -14,6 +15,7 @@ public:
     virtual eProtocTypes type() const = 0;
     /* used when connect to Server */
     virtual QByteArray declareArg() = 0;
+    virtual VideoBuffer* videoBuf() = 0;
 signals:
     void sig_writeOutCmd(quint16,QByteArray);
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>576</width>
-    <height>401</height>
+    <height>659</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -139,6 +139,19 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="Phonon::VideoPlayer" name="videoPlayer">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>250</width>
+           <height>250</height>
+          </size>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
@@ -235,6 +248,16 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="Phonon::VideoPlayer" name="videoPlayer_2">
+         <property name="minimumSize">
+          <size>
+           <width>250</width>
+           <height>250</height>
+          </size>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
@@ -269,6 +292,11 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
+  <customwidget>
+   <class>Phonon::VideoPlayer</class>
+   <extends>QWidget</extends>
+   <header location="global">phonon/videoplayer.h</header>
+  </customwidget>
   <customwidget>
    <class>RcvProgressView</class>
    <extends>QGraphicsView</extends>

@@ -2,6 +2,7 @@
 #define NCCLIENTWINDOW_H
 
 #include <QMainWindow>
+#include <phonon>
 #include "gui/rcvprogressscene.h"
 #include "protocol/protocoltypes.h"
 #include "connection.h"
@@ -22,6 +23,7 @@ public:
 signals:
     void sig_onConAbortCmd();
     void sig_onConConnectToHostCmd(QString,quint16);
+    void sig_cacheFilePlayAble();
 
     void sig_onConAbortCmd2();
     void sig_onConConnectToHostCmd2(QString,quint16);
@@ -39,6 +41,9 @@ private slots:
     void onConnected2();
     void onDisconnected2();
 
+    void onConReadyPlay();
+    void onConReadyPlay2();
+
 
     void on_pushButton_linkServer_clicked();
 
@@ -49,6 +54,8 @@ private slots:
     void on_lineEdit_serverPort_all_textChanged(const QString &arg1);
 
 private:
+
+    void inline initVideo();
     void inline initCon();
     void inline initCon2();
     Ui::NCClientWindow *ui;

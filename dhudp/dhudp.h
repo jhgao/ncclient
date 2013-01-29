@@ -27,6 +27,7 @@ public:
     explicit DHudp(QObject *parent = 0);
     eProtocTypes type() const;
     QByteArray declareArg();
+    VideoBuffer* videoBuf();
     
 signals:
     void sig_cmdConnected();
@@ -68,6 +69,9 @@ private:
     //rcv datagram queue
     DHudpRcvQueue* i_queue;
     QTimer* i_procQueueDelayTimer;
+
+    //video buffer
+    VideoBuffer* i_videoBuf;
 };
 }//namespace nProtocUDP
 

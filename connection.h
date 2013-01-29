@@ -17,11 +17,13 @@ class Connection : public QTcpSocket
 public:
     explicit Connection(int protocType,
                         QObject *parent = 0);
-    
+
+    VideoBuffer* videoBuffer();
 signals:
     void sig_ConnectionFinished(Connection*);
     void sig_progressPercent(uint);
     void sig_gotBlockSN(quint32 sn);
+    void sig_bufReadyPlay();
 
 public slots:
     void slot_abortWorks();
@@ -50,6 +52,9 @@ private:
 
     //prtocol type of this connection
     int i_protocType;
+
+    //video buffer ( implemented in DataHandler)
+    VideoBuffer* i_videoBuffer;
 };
 
 #endif // CONNECTION_H

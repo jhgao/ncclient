@@ -7,9 +7,10 @@
 #include <QQueue>
 #include <QTimer>
 #include "protocol/rawblock.h"
+#include "videobuffer.h"
 
 #define CACHE_SIZE (500*1000) //500K
-#define RCV_CACHE_FILE_NAME "rcv.cache"
+#define RCV_CACHE_FILE_NAME "dhtcp.rcvcache"
 #define FILE_WAIT_BYTES_WRITTEN 5000    //5S
 #define FLUSH_DELAY 1000 // 1S
 
@@ -18,7 +19,7 @@ class DHtcpDecoder : public QObject
 {
     Q_OBJECT
 public:
-    explicit DHtcpDecoder(QObject *parent = 0);
+    explicit DHtcpDecoder(VideoBuffer*, QObject *parent = 0);
     bool queueFileBlock(const QByteArray &);
     QString getRcvCacheFileName()const;
 signals:
@@ -37,6 +38,7 @@ private:
     QQueue<QByteArray> i_queue; //cache
     qint64 i_cacheSize;
     QTimer* i_flushDelayTimer;
+    VideoBuffer* i_pvbuf;
 };
 }
 

@@ -2,7 +2,7 @@
 
 Connection::Connection(int protocType,QObject *parent) :
     QTcpSocket(parent),packetSize(0),i_cmd_counter(0),i_dh(0),
-    i_ackProtoc(PROTOC_NONE),i_protocType(protocType)
+    i_ackProtoc(PROTOC_NONE),i_protocType(protocType),i_videoBuffer(0)
 {
     connect(this, SIGNAL(readyRead()),
             this, SLOT(onControlSktReadyRead()));
@@ -27,6 +27,14 @@ Connection::Connection(int protocType,QObject *parent) :
         break;
     default:;
     }
+    i_videoBuffer = i_dh->videoBuf();
+    connect(i_videoBuffer, SIGNAL(sig_readyPlay()),
+            this, SIGNAL(sig_bufReadyPlay()));
+}
+
+VideoBuffer *Connection::videoBuffer()
+{
+    return i_videoBuffer;
 }
 
 void Connection::onControlSktReadyRead()
