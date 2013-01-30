@@ -73,6 +73,9 @@ private:
 
     VideoBuffer* i_videoBuf;
     VideoBuffer* i_videoBuf2;
+
+    bool triggered;
+    bool triggered2;
 };
 
 #endif // NCCLIENTWINDOW_H

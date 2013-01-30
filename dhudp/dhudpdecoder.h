@@ -39,6 +39,8 @@ signals:
 
     void sig_progressPercent(uint);
     void sig_gotBlockSN(quint32);
+
+    void sig_decodeDone();
 public slots:
     void processQueue();
 

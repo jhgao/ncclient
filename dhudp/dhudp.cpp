@@ -16,7 +16,7 @@ DHudp::DHudp(VideoBuffer *vbuf, QObject *parent) :
     i_procQueueDelayTimer = new QTimer(this);
     i_procQueueDelayTimer->setSingleShot(true);
 
-    i_decoder = new DHudpDecoder(*i_queue);
+    i_decoder = new DHudpDecoder(*i_queue,i_videoBuf);
 
     connect(i_procQueueDelayTimer,SIGNAL(timeout()),//cross thread
             i_decoder, SLOT(processQueue()));

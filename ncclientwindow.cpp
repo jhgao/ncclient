@@ -5,7 +5,8 @@ NCClientWindow::NCClientWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::NCClientWindow),
     i_con(0),i_conThread(0),m_isConnected(false),
-    i_con2(0),i_conThread2(0),m_isConnected2(false)
+    i_con2(0),i_conThread2(0),m_isConnected2(false),
+    triggered(false),triggered2(false)
 {
     ui->setupUi(this);
     connect(ui->pushButton_all_connect, SIGNAL(clicked()),
@@ -99,7 +100,6 @@ void NCClientWindow::on_pushButton_linkServer_clicked()
 
 void NCClientWindow::on_pushButton_linkServer_2_clicked()
 {
-
     if(m_isConnected2){
         emit sig_onConAbortCmd2();
     }else{
@@ -173,7 +173,10 @@ void NCClientWindow::updateProgress(const unsigned int p)
 {
     ui->progressBar->setValue(p);
 
-    if( p == 100){
+    if( p ==100
+            && !triggered){
+        triggered = true;
+        qDebug() << "Vbuf size " << i_videoBuf->size();
         this->onBufReadyPlay();
     }
 }
@@ -227,16 +230,16 @@ void NCClientWindow::onDisconnected2()
 
 void NCClientWindow::onBufReadyPlay()
 {
-    qDebug() << "NCClientWindow::onConReadyPlay() in";
+    qDebug() << "NCClientWindow::onBufReadyPlay() in";
     ui->videoPlayer->play(Phonon::MediaSource(i_videoBuf));
-    qDebug() << "NCClientWindow::onConReadyPlay() out";
+    qDebug() << "NCClientWindow::onBufReadyPlay() out";
 }
 
 void NCClientWindow::onBufReadyPlay2()
 {
-    qDebug() << "NCClientWindow::onConReadyPlay2() in";
-    ui->videoPlayer_2->play(Phonon::MediaSource(i_videoBuf));
-    qDebug() << "NCClientWindow::onConReadyPlay2() out";
+    qDebug() << "NCClientWindow::onBufReadyPlay2() in";
+    ui->videoPlayer_2->play(Phonon::MediaSource(i_videoBuf2));
+    qDebug() << "NCClientWindow::onBufReadyPlay2() out";
 }
 
 void NCClientWindow::on_lineEdit_serverAddr_all_textChanged(const QString &arg1)

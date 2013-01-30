@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     dhudp/decparams.cpp \
     dhtcp/dhtcpdecoder.cpp \
     dhtcp/dhtcp.cpp \
-    videobuffer.cpp
+    videobuffer.cpp \
+    videoplayer/videoplayer.cpp
 
 HEADERS  += ncclientwindow.h \
     gui/rcvprogressview.h \
@@ -52,6 +53,7 @@ HEADERS  += ncclientwindow.h \
     dhtcp/dhtcpprotocol.h \
     dhtcp/dhtcpdecoder.h \
     dhtcp/dhtcp.h \
-    videobuffer.h
+    videobuffer.h \
+    videoplayer/videoplayer.h
 
 FORMS    += ncclientwindow.ui

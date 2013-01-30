@@ -8,6 +8,9 @@ DHudpDecoder::DHudpDecoder(DHudpRcvQueue &q,VideoBuffer* vbuf, QObject *parent) 
     i_correctionCycCounter(0),i_wrongFragsLimit(WRONG_FRAGS_LIMIT_DEFAULT),
     i_pvbuf(vbuf)
 {
+    connect(this, SIGNAL(sig_decodeDone()),
+            i_pvbuf, SLOT(onDecodDone()));
+
     //cache file
     i_rcvCacheFileInfo.setFile(RCVER_CACHE_FILE);
     if(i_rcvCacheFileInfo.exists()){
@@ -193,6 +196,8 @@ void DHudpDecoder::onGotAllCurrentCycleBlocks()
 
     if(! this->testDecode()){
         qDebug() << "[DHudp] test decode failed";
+    }else{
+        emit sig_decodeDone();
     }
 
     i_queue.waitForClear();
@@ -226,7 +231,8 @@ bool DHudpDecoder::saveCurrentCycleBlocks()
             break;
         }else {
             wroteBytes += wResult;
-            this->markSavedBlock(b);
+
+            this->markSavedBlock(b);    //will emit progress percentage
             qDebug() << "\t saved block" << b.dbgString();
             qDebug() << "\t wrote out" << wroteBytes << "bytes";
         }
@@ -324,6 +330,7 @@ bool DHudpDecoder::testDecode()
             rawBlock.resize(rawFileSize - wroteOutBytes);   //last block
 
         wroteOutBytes += rawFile.write(rawBlock);
+        i_pvbuf->waitForAppendBlock(rawBlock);  //buffer raw block
 
     }
     if(wroteOutBytes == rawFileSize){
