@@ -2,6 +2,7 @@
 #define NCCLIENTWINDOW_H
 
 #include <QMainWindow>
+#include <QCoreApplication>
 #include <phonon>
 #include "gui/rcvprogressscene.h"
 #include "protocol/protocoltypes.h"

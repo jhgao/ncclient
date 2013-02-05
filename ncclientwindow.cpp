@@ -37,6 +37,8 @@ NCClientWindow::NCClientWindow(QWidget *parent) :
 
     ui->lineEdit_serverAddr_all->setText(ipAddress);
     ui->lineEdit_serverPort_all->setText(QString::number(SERVER_DEFAULT_PORT));
+
+    ui->statusBar->showMessage(QString("...") + QCoreApplication::applicationFilePath().right(ui->statusBar->geometry().width() - 5));
 }
 
 NCClientWindow::~NCClientWindow()
